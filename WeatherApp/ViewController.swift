@@ -25,6 +25,29 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
     @IBOutlet weak var lblTempMin: UILabel!
     @IBOutlet weak var imgTemp: UIImageView!
     @IBOutlet weak var imgWeatherStatus: UIImageView!
+    
+    
+    @IBOutlet weak var lblday1day: UILabel!
+    @IBOutlet weak var lblday1mintemp: UILabel!
+    @IBOutlet weak var lblday1maxtemp: UILabel!
+    
+    @IBOutlet weak var lblday2day: UILabel!
+    @IBOutlet weak var lblday2mintemp: UILabel!
+    @IBOutlet weak var lblday2maxtemp: UILabel!
+    
+    @IBOutlet weak var lblday3day: UILabel!
+    @IBOutlet weak var lblday3mintemp: UILabel!
+    @IBOutlet weak var lblday3maxtemp: UILabel!
+    
+    @IBOutlet weak var lblday4day: UILabel!
+    @IBOutlet weak var lblday4mintemp: UILabel!
+    @IBOutlet weak var lblday4maxtemp: UILabel!
+    
+    @IBOutlet weak var lblday5day: UILabel!
+    @IBOutlet weak var lblday5mintemp: UILabel!
+    @IBOutlet weak var lblday5maxtemp: UILabel!
+    
+    
     let locationManager = CLLocationManager ()
     
     var weather: Weather!
@@ -34,15 +57,7 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
     {
         super.viewDidLoad()
         
-        let today = NSDate()
-        let formatter =  NSDateFormatter()
-        formatter.dateFormat = "hh:mm a"
         
-        lblTime.text = formatter.stringFromDate(today)
-        print(lblTime.text)
-        
-        formatter.dateFormat = "EE"
-        lblDay.text = formatter.stringFromDate(today)
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -115,6 +130,8 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
                 self.lblWind.text = String.localizedStringWithFormat("%.0f", todayData.WindSpeed)
                 self.imgTemp.image = self.ConvertStringToImage(String.localizedStringWithFormat("%.0f", todayData.Tempreture))
                 self.imgWeatherStatus.image = UIImage (named: todayData.DayLooksLike)
+                self.lblDay.text = self.GetDayFromstring(todayData.Date)
+                self.lblTime.text = self.GetTimeFromSting(todayData.Date)
                 
             }
            
@@ -150,5 +167,23 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
        
     }
     
+    
+    func GetDayFromstring (str : NSDate )->String
+    {
+        let formatter =  NSDateFormatter()
+       
+        formatter.dateFormat = "EE"
+        return  formatter.stringFromDate(str)
+       
+    }
+    func GetTimeFromSting (str : NSDate) ->String
+    {
+        
+        let formatter =  NSDateFormatter()
+        formatter.dateFormat = "hh:mm a"
+        
+        return formatter.stringFromDate(str)
+       
+    }
 }
 

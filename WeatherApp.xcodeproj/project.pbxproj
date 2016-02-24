@@ -16,6 +16,7 @@
 		03291EB61C7A852700EC3345 /* WeatherAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03291EB51C7A852700EC3345 /* WeatherAppUITests.swift */; };
 		03291EC81C7A856500EC3345 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03291EC71C7A856500EC3345 /* Constants.swift */; };
 		03291ECA1C7A85FF00EC3345 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03291EC91C7A85FF00EC3345 /* Weather.swift */; };
+		039E92E21C7E5C2600047E55 /* HorizontalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039E92E11C7E5C2600047E55 /* HorizontalTableView.swift */; };
 		03DAEB3A1C7E013E00E37F53 /* Tempreature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DAEB391C7E013E00E37F53 /* Tempreature.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		03291EB71C7A852700EC3345 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03291EC71C7A856500EC3345 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		03291EC91C7A85FF00EC3345 /* Weather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		039E92E11C7E5C2600047E55 /* HorizontalTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalTableView.swift; sourceTree = "<group>"; };
 		03DAEB391C7E013E00E37F53 /* Tempreature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tempreature.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				03291E991C7A852700EC3345 /* Main.storyboard */,
+				039E92E11C7E5C2600047E55 /* HorizontalTableView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				03291ECA1C7A85FF00EC3345 /* Weather.swift in Sources */,
 				03291E981C7A852600EC3345 /* ViewController.swift in Sources */,
 				03DAEB3A1C7E013E00E37F53 /* Tempreature.swift in Sources */,
+				039E92E21C7E5C2600047E55 /* HorizontalTableView.swift in Sources */,
 				03291E961C7A852600EC3345 /* AppDelegate.swift in Sources */,
 				03291EC81C7A856500EC3345 /* Constants.swift in Sources */,
 			);

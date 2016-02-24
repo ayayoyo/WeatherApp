@@ -32,6 +32,7 @@ class Tempreature
     
     private var _TempUnit: TempratureUint = TempratureUint.Kelvin
     private var _DayLooksLike: String = "Clear"
+    private var _Date = NSDate()
     
     var Tempreture: Float
         {
@@ -87,8 +88,15 @@ class Tempreature
         }
     }
     
+    var Date : NSDate
+    {
+        get
+        {
+            return _Date
+        }
+    }
     
-    init (temp: Float, min_temp: Float, max_temp: Float, humdity: Float, pressure: Float, windspeed: Float , temp_unit: TempratureUint , daylookslike: String)
+    init (temp: Float, min_temp: Float, max_temp: Float, humdity: Float, pressure: Float, windspeed: Float , temp_unit: TempratureUint , daylookslike: String, date: NSDate)
     {
         _Temp = temp
         _Temp_min = min_temp
@@ -98,6 +106,7 @@ class Tempreature
         _WindSpeed = windspeed
         _TempUnit = temp_unit
         _DayLooksLike = daylookslike
+        _Date = date
     }
 
     private func TempreatureAccordingtoUnit(temp: Float) -> Float

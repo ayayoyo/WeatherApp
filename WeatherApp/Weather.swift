@@ -82,7 +82,7 @@ class Weather
                         self._TempData5Days = [Tempreature]()
                         if let list = dict["list"] as? [Dictionary <String ,AnyObject>] where list.count > 0
                         {
-                            print("\(list.count)")
+                            
                             for var i = 0 ; i < list.count ; i += 7
                             {
                                 var temp: Float = 0.0
@@ -92,6 +92,7 @@ class Weather
                                 var humdity:Float = 0.0
                                 var wind: Float = 0.0
                                 var Dlooklike: String = "Clear"
+                                var date = NSDate()
                                 
                                 if let weatherdata = list[i]["main"] as? Dictionary<String , AnyObject>
                                 {
@@ -135,7 +136,22 @@ class Weather
                                         Dlooklike = daylooklike
                                     }
                                 }
-                                let tempDay: Tempreature = Tempreature(temp: temp, min_temp: min_temp, max_temp: max_temp, humdity: humdity, pressure: Pressure, windspeed: wind, temp_unit: self._TempUnit , daylookslike: Dlooklike)
+                                if let datetxt = list[i]["dt_txt"] as? String
+                                {
+                                    let formatter = NSDateFormatter()
+                                    formatter.dateFormat = "yyyy-MM-dd HH:mm:SS"
+                                    formatter.timeZone = NSTimeZone(abbreviation: "GMT")
+                                    
+                                    if let d = formatter.dateFromString(datetxt)
+                                    {
+                                        date = d
+                                        
+                                    }
+                                    
+                                    
+                                }
+                                
+                                let tempDay: Tempreature = Tempreature(temp: temp, min_temp: min_temp, max_temp: max_temp, humdity: humdity, pressure: Pressure, windspeed: wind, temp_unit: self._TempUnit , daylookslike: Dlooklike , date: date)
                                 
                                 self._TempData5Days.append(tempDay)
                             }
