@@ -82,9 +82,11 @@ class Weather
                         self._TempData5Days = [Tempreature]()
                         if let list = dict["list"] as? [Dictionary <String ,AnyObject>] where list.count > 0
                         {
+                            print("\(list.count)")
                             
                             for var i = 0 ; i < list.count ; i += 7
                             {
+                                print("\(i)")
                                 var temp: Float = 0.0
                                 var min_temp : Float = 0.0
                                 var max_temp: Float = 0.0

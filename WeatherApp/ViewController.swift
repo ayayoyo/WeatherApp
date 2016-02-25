@@ -11,7 +11,8 @@ import CoreLocation
 
 
 
-class ViewController: UIViewController , CLLocationManagerDelegate {
+class ViewController: UIViewController , CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+{
 
     
     @IBOutlet weak var lblCity: UILabel!
@@ -25,32 +26,13 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
     @IBOutlet weak var lblTempMin: UILabel!
     @IBOutlet weak var imgTemp: UIImageView!
     @IBOutlet weak var imgWeatherStatus: UIImageView!
-    
-    
-    @IBOutlet weak var lblday1day: UILabel!
-    @IBOutlet weak var lblday1mintemp: UILabel!
-    @IBOutlet weak var lblday1maxtemp: UILabel!
-    
-    @IBOutlet weak var lblday2day: UILabel!
-    @IBOutlet weak var lblday2mintemp: UILabel!
-    @IBOutlet weak var lblday2maxtemp: UILabel!
-    
-    @IBOutlet weak var lblday3day: UILabel!
-    @IBOutlet weak var lblday3mintemp: UILabel!
-    @IBOutlet weak var lblday3maxtemp: UILabel!
-    
-    @IBOutlet weak var lblday4day: UILabel!
-    @IBOutlet weak var lblday4mintemp: UILabel!
-    @IBOutlet weak var lblday4maxtemp: UILabel!
-    
-    @IBOutlet weak var lblday5day: UILabel!
-    @IBOutlet weak var lblday5mintemp: UILabel!
-    @IBOutlet weak var lblday5maxtemp: UILabel!
+    @IBOutlet weak var ColViewDays: UICollectionView!
     
     
     let locationManager = CLLocationManager ()
     
-    var weather: Weather!
+    
+    var weather: Weather?
     
     
     override func viewDidLoad()
@@ -61,6 +43,8 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+       
     }
 
     override func didReceiveMemoryWarning() {
@@ -107,7 +91,7 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
         NSUserDefaults.standardUserDefaults().setValue(crrlocatio.longitude, forKey: "Lng")
         weather = Weather (lat: crrlocatio.latitude, lon: crrlocatio.longitude, tempunit: TempratureUint.Imperial)
        
-        weather.DwonloadWeather { () -> () in
+        weather!.DwonloadWeather { () -> () in
           self.UpdateScreenWithWeatherValues()
         }
             
@@ -117,26 +101,36 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
     func UpdateScreenWithWeatherValues( )
     {
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.lblCity.text = self.weather.City
-            
-            if self.weather.Tempreature5days.count > 0
-            {
-                let todayData = self.weather.Tempreature5days[0]
-                self.lblTempMin.text = String.localizedStringWithFormat("%.0f", todayData.Temp_min)
-                self.lblTempMax.text = String.localizedStringWithFormat("%.0f", todayData.Temp_max)
-                self.lblPressure.text = String.localizedStringWithFormat("%.0f", todayData.Pressure)
-                self.lblhumedity.text = String.localizedStringWithFormat("%.0f%@", todayData.Humidity,"%")
-                self.lblWind.text = String.localizedStringWithFormat("%.0f", todayData.WindSpeed)
-                self.imgTemp.image = self.ConvertStringToImage(String.localizedStringWithFormat("%.0f", todayData.Tempreture))
-                self.imgWeatherStatus.image = UIImage (named: todayData.DayLooksLike)
-                self.lblDay.text = self.GetDayFromstring(todayData.Date)
-                self.lblTime.text = self.GetTimeFromSting(todayData.Date)
-                
-            }
-           
-            
-        })
+        if let w = weather
+        {
+            dispatch_async(dispatch_get_main_queue(),
+                {
+                    self.lblCity.text = w.City
+                    
+                    
+                    if w.Tempreature5days.count > 0
+                    {
+                        let todayData = w.Tempreature5days[0]
+                        self.lblTempMin.text = String.localizedStringWithFormat("%.0f", todayData.Temp_min)
+                        self.lblTempMax.text = String.localizedStringWithFormat("%.0f", todayData.Temp_max)
+                        self.lblPressure.text = String.localizedStringWithFormat("%.0f", todayData.Pressure)
+                        self.lblhumedity.text = String.localizedStringWithFormat("%.0f%@", todayData.Humidity,"%")
+                        self.lblWind.text = String.localizedStringWithFormat("%.0f", todayData.WindSpeed)
+                        self.imgTemp.image = self.ConvertStringToImage(String.localizedStringWithFormat("%.0f", todayData.Tempreture))
+                        self.imgWeatherStatus.image = UIImage (named: todayData.DayLooksLike)
+                        self.lblDay.text = self.GetDayFromstring(todayData.Date)
+                        self.lblTime.text = self.GetTimeFromSting(todayData.Date)
+                        
+                        
+                        self.ColViewDays.reloadData()
+                    }
+                    
+                    
+                    
+            })
+
+        }
+       
     }
     
     func ConvertStringToImage (str:String) ->UIImage
@@ -185,5 +179,38 @@ class ViewController: UIViewController , CLLocationManagerDelegate {
         return formatter.stringFromDate(str)
        
     }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell
+    {
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("DayCell", forIndexPath: indexPath) as? DayDataCell
+        {
+            if weather!.Tempreature5days.count > indexPath.row + 1
+            {
+                let daydata = weather!.Tempreature5days[indexPath.row + 1 ]
+                cell.ConfigureCell(GetDayFromstring(daydata.Date), mintemp: String.localizedStringWithFormat("%0.f", daydata.Temp_min) , maxtemp: String.localizedStringWithFormat("%.0f", daydata.Temp_max))
+                
+            }
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        if let w =  weather
+        {
+            
+            return w.Tempreature5days.count-1
+        }
+        return 0
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    {
+        
+        return CGSizeMake(60.0, 64.0)
+    }
+  
 }
 
