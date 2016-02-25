@@ -103,7 +103,6 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
         
         if let w = weather
         {
-            print("\(w.Tempreature5days.count)")
             dispatch_async(dispatch_get_main_queue(),
                 {
                     self.lblCity.text = w.City

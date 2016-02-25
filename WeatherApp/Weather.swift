@@ -57,7 +57,7 @@ class Weather
     {
         let urlstr = "\(BASE_URL)lat=\(_lat)&lon=\(_lon)&appid=\(API_KEY)"
         let url = NSURL(string: urlstr)!
-        print(url)
+       
         
         let  session = NSURLSession.sharedSession()
         
@@ -83,7 +83,6 @@ class Weather
                         self._TempData5Days = [Tempreature]()
                         if let list = dict["list"] as? [Dictionary <String ,AnyObject>] where list.count > 0
                         {
-                            print("\(list.count)")
                             var crrDay = self.RetrieveDataFromOneItem(list[0])
                             
                             
@@ -196,7 +195,6 @@ class Weather
             if let d = formatter.dateFromString(datetxt)
             {
                 date = d
-                print(date)
             }
             
             
