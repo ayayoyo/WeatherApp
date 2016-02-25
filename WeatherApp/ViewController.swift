@@ -11,7 +11,7 @@ import CoreLocation
 
 
 
-class ViewController: UIViewController , CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+class ViewController: UIViewController , CLLocationManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout , UIAlertViewDelegate
 {
 
     
@@ -69,14 +69,11 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
     
     func LocationAuthorizationStatus()
     {
-        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse
+        if CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse
         {
             
-            locationManager.startUpdatingLocation()
-        }
-        else
-        {
-                locationManager.requestWhenInUseAuthorization()
+            locationManager.requestWhenInUseAuthorization()
+
         }
         
     }
@@ -96,6 +93,36 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
         }
             
         
+    }
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse
+        {
+             locationManager.startUpdatingLocation()
+        }
+        else
+        {
+           
+            manager.requestWhenInUseAuthorization()
+           let alertcontroller = UIAlertController (title: "", message: "Please chage the Location settings to 'While Using the App' in order to get user data", preferredStyle: UIAlertControllerStyle.Alert)
+            let cancelAction = UIAlertAction (title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { (action :UIAlertAction) -> Void in
+                
+            })
+            let SettingAction = UIAlertAction (title: "Settings", style: UIAlertActionStyle.Default, handler: { (action:UIAlertAction) -> Void in
+                
+                 UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                /*dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                     UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+                })*/
+               
+            })
+            
+            alertcontroller.addAction(cancelAction)
+            alertcontroller.addAction(SettingAction)
+            
+            presentViewController(alertcontroller, animated: true, completion: nil)
+          
+           
+        }
     }
     
     func UpdateScreenWithWeatherValues( )

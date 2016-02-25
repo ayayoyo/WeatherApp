@@ -111,7 +111,6 @@
 				03291EC41C7A853B00EC3345 /* View */,
 				03291EC51C7A854200EC3345 /* Controller */,
 				03291E9C1C7A852700EC3345 /* Assets.xcassets */,
-				03291E9E1C7A852700EC3345 /* LaunchScreen.storyboard */,
 				03291EA11C7A852700EC3345 /* Info.plist */,
 			);
 			path = WeatherApp;
@@ -148,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				03291E991C7A852700EC3345 /* Main.storyboard */,
+				03291E9E1C7A852700EC3345 /* LaunchScreen.storyboard */,
 				030518ED1C7F584900B0E1D0 /* DayDataCell.swift */,
 			);
 			name = View;
