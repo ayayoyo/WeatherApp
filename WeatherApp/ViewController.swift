@@ -89,7 +89,7 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
             
         NSUserDefaults.standardUserDefaults().setValue(crrlocatio.latitude, forKey: "Lat")
         NSUserDefaults.standardUserDefaults().setValue(crrlocatio.longitude, forKey: "Lng")
-        weather = Weather (lat: crrlocatio.latitude, lon: crrlocatio.longitude, tempunit: TempratureUint.Imperial)
+        weather = Weather (lat: crrlocatio.latitude, lon: crrlocatio.longitude, tempunit: TEMPRATURE_UNIT)
        
         weather!.DwonloadWeather { () -> () in
           self.UpdateScreenWithWeatherValues()
@@ -103,6 +103,7 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
         
         if let w = weather
         {
+            print("\(w.Tempreature5days.count)")
             dispatch_async(dispatch_get_main_queue(),
                 {
                     self.lblCity.text = w.City
@@ -111,15 +112,15 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
                     if w.Tempreature5days.count > 0
                     {
                         let todayData = w.Tempreature5days[0]
-                        self.lblTempMin.text = String.localizedStringWithFormat("%.0f", todayData.Temp_min)
-                        self.lblTempMax.text = String.localizedStringWithFormat("%.0f", todayData.Temp_max)
+                        self.lblTempMin.text = String.localizedStringWithFormat("%.0f", self.TempreatureAccordingtoUnit(todayData.Temp_min, _TempUnit: TEMPRATURE_UNIT))
+                        self.lblTempMax.text = String.localizedStringWithFormat("%.0f", self.TempreatureAccordingtoUnit(todayData.Temp_max, _TempUnit: TEMPRATURE_UNIT))
                         self.lblPressure.text = String.localizedStringWithFormat("%.0f", todayData.Pressure)
                         self.lblhumedity.text = String.localizedStringWithFormat("%.0f%@", todayData.Humidity,"%")
                         self.lblWind.text = String.localizedStringWithFormat("%.0f", todayData.WindSpeed)
-                        self.imgTemp.image = self.ConvertStringToImage(String.localizedStringWithFormat("%.0f", todayData.Tempreture))
+                        self.imgTemp.image = self.ConvertStringToImage(String.localizedStringWithFormat("%.0f", self.TempreatureAccordingtoUnit(todayData.Tempreture, _TempUnit:TEMPRATURE_UNIT) ))
                         self.imgWeatherStatus.image = UIImage (named: todayData.DayLooksLike)
                         self.lblDay.text = self.GetDayFromstring(todayData.Date)
-                        self.lblTime.text = self.GetTimeFromSting(todayData.Date)
+                        self.lblTime.text = self.GetTimeFromSting(NSDate())
                         
                         
                         self.ColViewDays.reloadData()
@@ -190,7 +191,7 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
             if weather!.Tempreature5days.count > indexPath.row + 1
             {
                 let daydata = weather!.Tempreature5days[indexPath.row + 1 ]
-                cell.ConfigureCell(GetDayFromstring(daydata.Date), mintemp: String.localizedStringWithFormat("%0.f", daydata.Temp_min) , maxtemp: String.localizedStringWithFormat("%.0f", daydata.Temp_max))
+                cell.ConfigureCell(GetDayFromstring(daydata.Date), mintemp: String.localizedStringWithFormat("%0.f", self.TempreatureAccordingtoUnit(daydata.Temp_min, _TempUnit: TEMPRATURE_UNIT)) , maxtemp: String.localizedStringWithFormat("%.0f",self.TempreatureAccordingtoUnit(daydata.Temp_max, _TempUnit: TEMPRATURE_UNIT) ))
                 
             }
             return cell
@@ -211,6 +212,25 @@ class ViewController: UIViewController , CLLocationManagerDelegate, UICollection
         
         return CGSizeMake(60.0, 64.0)
     }
+    
+    func TempreatureAccordingtoUnit(temp: Float, _TempUnit: TempratureUint ) -> Float
+    {
+        if _TempUnit == TempratureUint.Kelvin
+        {
+            return temp
+        }
+        else if _TempUnit == TempratureUint.Metric
+        {
+            return temp - 273.15
+        }
+        else
+        {
+            
+            return ((temp - 273.15) * 1.8000) + 32.00
+        }
+        
+    }
+
   
 }
 

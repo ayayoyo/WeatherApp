@@ -38,7 +38,7 @@ class Tempreature
         {
         get
         {
-            return TempreatureAccordingtoUnit(_Temp)
+            return _Temp//TempreatureAccordingtoUnit(_Temp)
         }
     }
     
@@ -59,10 +59,17 @@ class Tempreature
     }
     
     var Temp_min : Float
-        {
+    {
         get
         {
-            return TempreatureAccordingtoUnit( _Temp_min)
+            return  _Temp_min//TempreatureAccordingtoUnit( _Temp_min)
+        }
+        set
+        {
+            if(newValue < _Temp_min)
+            {
+                _Temp_min = newValue
+            }
         }
     }
     
@@ -70,7 +77,15 @@ class Tempreature
         {
         get
         {
-            return TempreatureAccordingtoUnit( _Temp_max)
+            return _Temp_max//TempreatureAccordingtoUnit( _Temp_max)
+        }
+        set
+        {
+            if newValue > _Temp_max
+            {
+                _Temp_max = newValue
+            }
+            
         }
     }
     
@@ -126,6 +141,7 @@ class Tempreature
         }
         
     }
+    
 
     
 }
