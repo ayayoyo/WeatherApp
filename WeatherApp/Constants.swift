@@ -10,6 +10,7 @@ import Foundation
 
 let BASE_URL = "http://api.openweathermap.org/data/2.5/forecast?"
 let API_KEY = "50e8452391929c43c012a7331e579be1"
+let TEMPRATURE_UNIT = TempratureUint.Imperial
 
 typealias Completed = ()->()
 
